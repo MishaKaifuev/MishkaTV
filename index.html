@@ -22,6 +22,8 @@
     <p>Сегодня в эфире: Владимирский Централ · Кольщик · Звёздная пурга · Таганка · Михаил Круг в студии "РетроТВ"</p>
   </div>
 
+  <button id="mute-button">🔇 Выключить звук</button>
+
   <script>
     const videos = [
       '_wnQ3Ow02yQ', // Владимирский Централ
@@ -41,7 +43,9 @@
           autoplay: 1,
           controls: 0,
           rel: 0,
-          mute: 0
+          mute: 1, // сначала mute, чтобы autoplay сработал
+          modestbranding: 1,
+          fs: 0
         },
         events: {
           'onReady': onPlayerReady,
@@ -53,6 +57,12 @@
 
     function onPlayerReady(event) {
       event.target.playVideo();
+      try {
+        event.target.unMute(); // Попытка включить звук сразу
+        console.log("Звук включён автоматически");
+      } catch (e) {
+        console.warn("Браузер запретил авторазмут");
+      }
     }
 
     function onPlayerStateChange(event) {
@@ -67,6 +77,11 @@
       currentIndex = (currentIndex + 1) % videos.length;
       player.loadVideoById(videos[currentIndex]);
     }
+
+    // Кнопка отключения звука
+    document.getElementById("mute-button").addEventListener("click", function() {
+      player.mute();
+    });
 
     // Переключение вручную по клавишам
     document.addEventListener('keydown', function(e) {
