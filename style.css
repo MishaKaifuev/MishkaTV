@@ -88,7 +88,7 @@ body {
   left: 0;
   width: 1120px;
   height: 832px;
-  background: url('https://i.giphy.com/QuPrp3BI6cMe2lErCb.webp');
+    background: url('https://i.giphy.com/QuPrp3BI6cMe2lErCb.webp?cachebuster=2025_05_03');
   opacity: 0.08;
   pointer-events: none;
   z-index: 4;
