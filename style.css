@@ -67,4 +67,29 @@ body {
       height: 320px;
     }
   }
-  
+  /* VHS эффект: дрожание и шум */
+.tv {
+  animation: shake 0.3s infinite;
+  filter: contrast(1.2);
+}
+
+@keyframes shake {
+  0% { transform: translate(0px, 0px); }
+  25% { transform: translate(0px, 1px); }
+  50% { transform: translate(0px, 0px); }
+  75% { transform: translate(0px, -1px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+/* Наложение VHS шума */
+.vhs-noise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1120px;
+  height: 832px;
+  background: url('https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif');
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 4;
+}
