@@ -93,3 +93,27 @@ body {
   pointer-events: none;
   z-index: 4;
 }
+.ticker {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(255, 0, 0, 0.85);
+  color: white;
+  font-family: monospace;
+  font-size: 16px;
+  padding: 5px 0;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.ticker p {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker-scroll 20s linear infinite;
+  padding-left: 100%;
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
