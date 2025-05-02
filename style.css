@@ -1,0 +1,70 @@
+body {
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .container {
+    position: relative;
+    width: 1120px;
+    height: 832px;
+  }
+  
+  .video-frame {
+    position: absolute;
+    top: 140px;        /* чуть вверх */
+    left: 130px;       /* чуть левее */
+    width: 690px;      /* чуть шире */
+    height: 528px;     /* чуть ниже */
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 10px;  /* чтобы смягчить углы */
+  }
+  
+  
+  .video-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  .tv {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1120px;
+    height: 832px;
+    z-index: 2; /* верхний слой — телевизор */
+  }
+  .logo {
+    position: absolute;
+    top: -80px;
+    right: 20px;
+    width: 360px;
+    z-index: 3;
+  }
+  @media (max-width: 400px) {
+    .container {
+      transform: scale(0.36);
+      transform-origin: top center;
+      margin-top: -30px;
+    }
+  
+    .logo {
+      top: 12px;
+      right: 10px;
+      width: 100px;
+    }
+  
+    .video-frame {
+      top: 95px;
+      left: 135px;
+      width: 410px;
+      height: 320px;
+    }
+  }
+  

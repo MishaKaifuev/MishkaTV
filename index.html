@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Круг ТВ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="video-frame">
+      <div id="player"></div>
+    </div>
+    <img src="logo.png" class="logo" alt="МИШКА ТВ">
+    <img src="tv.png" class="tv" alt="Телевизор">
+  </div>
+
+  <script>
+    const videos = [
+      '_wnQ3Ow02yQ', // Владимирский централ
+      'mlOeHmUTbwg', // Михаил Круг — Пришелец
+      '7C7DLnCYrP8'  // Михаил Круг — Таганка
+    ];
+  
+    let player;
+    let currentIndex = 0;
+  
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '540',
+        width: '676',
+        videoId: videos[currentIndex],
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          rel: 0,
+          mute: 0,
+          start: 5 // старт с 10 секунды
+        },
+        events: {
+          'onReady': onPlayerReady
+        }
+      });
+    }
+  
+    function onPlayerReady(event) {
+      event.target.playVideo();
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % videos.length;
+        player.loadVideoById({
+          videoId: videos[currentIndex],
+          startSeconds: 20
+        });
+      }, 20000); // каждые 10 секунд
+    }
+  </script>  
+</body>
+</html>
