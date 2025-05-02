@@ -141,3 +141,17 @@ body {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
+.live-tag {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  z-index: 5;
+  background: red;
+  color: white;
+  font-weight: bold;
+  font-family: sans-serif;
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  box-shadow: 0 0 4px black;
+}
