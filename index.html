@@ -1,39 +1,37 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Круг ТВ</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script src="https://www.youtube.com/iframe_api"></script>
 </head>
-  <div class="ticker">
-  <p>Сегодня в эфире: Владимирский Централ · Кольщик · Звёздная пурга · Таганка · Михаил Круг в студии "РетроТВ"</p>
-</div>
 <body>
-  <div class="ticker">
-  <p>Сегодня в эфире: Владимирский Централ · Кольщик · Звёздная пурга · Таганка · Михаил Круг в студии "РетроТВ"</p>
-</div>
   <div class="container">
     <div class="video-frame">
       <div class="live-tag">ЭФИР</div>
       <div id="player"></div>
     </div>
-    <img src="logo.png" class="logo" alt="МИШКА ТВ">
-    <img src="tv.png" class="tv" alt="Телевизор">
+    <img src="logo.png" class="logo" alt="МИШКА ТВ" />
+    <img src="tv.png" class="tv" alt="Телевизор" />
     <div class="vhs-noise"></div>
+  </div>
+
+  <div class="ticker">
+    <p>Сегодня в эфире: Владимирский Централ · Кольщик · Звёздная пурга · Таганка · Михаил Круг в студии "РетроТВ"</p>
   </div>
 
   <script>
     const videos = [
-      '_wnQ3Ow02yQ', // Владимирский централ
-      'mlOeHmUTbwg', // Михаил Круг — Пришелец
-      '7C7DLnCYrP8'  // Михаил Круг — Таганка
+      '_wnQ3Ow02yQ', // Владимирский Централ
+      'mlOeHmUTbwg', // Пришелец
+      '7C7DLnCYrP8'  // Таганка
     ];
-  
+
     let player;
     let currentIndex = 0;
-  
+
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('player', {
         height: '540',
@@ -43,25 +41,44 @@
           autoplay: 1,
           controls: 0,
           rel: 0,
-          mute: 0,
-          start: 5 // старт с 10 секунды
+          mute: 0
         },
         events: {
-          'onReady': onPlayerReady
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange,
+          'onError': onPlayerError
         }
       });
     }
-  
+
     function onPlayerReady(event) {
       event.target.playVideo();
-      setInterval(() => {
-        currentIndex = (currentIndex + 1) % videos.length;
-        player.loadVideoById({
-          videoId: videos[currentIndex],
-          startSeconds: 20
-        });
-      }, 20000); // каждые 10 секунд
     }
-  </script>  
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.ENDED) {
+        currentIndex = (currentIndex + 1) % videos.length;
+        player.loadVideoById(videos[currentIndex]);
+      }
+    }
+
+    function onPlayerError(event) {
+      console.warn('Ошибка загрузки видео. Пропускаем…');
+      currentIndex = (currentIndex + 1) % videos.length;
+      player.loadVideoById(videos[currentIndex]);
+    }
+
+    // Переключение вручную по клавишам
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight') {
+        currentIndex = (currentIndex + 1) % videos.length;
+        player.loadVideoById(videos[currentIndex]);
+      }
+      if (e.key === 'ArrowLeft') {
+        currentIndex = (currentIndex - 1 + videos.length) % videos.length;
+        player.loadVideoById(videos[currentIndex]);
+      }
+    });
+  </script>
 </body>
 </html>
