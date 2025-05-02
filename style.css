@@ -155,3 +155,16 @@ body {
   border-radius: 4px;
   box-shadow: 0 0 4px black;
 }
+#mute-button {
+  position: absolute;
+  bottom: 60px;
+  right: 30px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border: 1px solid white;
+  padding: 8px 12px;
+  font-family: monospace;
+  font-size: 14px;
+  z-index: 6;
+  cursor: pointer;
+}
