@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Круг ТВ</title>
   <!-- Open Graph для соцсетей -->
-<meta property="og:title" content="МИШКА ТВ — Круг 24/7" />
-<meta property="og:description" content="Круг по кругу. Эфир Михаила Круга без остановки — с VHS шумом, телевизором и душой." />
-<meta property="og:image" content="https://mishakaifuev.github.io/mishka-tv/preview.png" />
-<meta property="og:url" content="https://mishakaifuev.github.io/mishka-tv/" />
-<meta property="og:type" content="website" />
+  <meta property="og:title" content="МИШКА ТВ — Круг 24/7" />
+  <meta property="og:description" content="Круг по кругу. Эфир Михаила Круга без остановки — с VHS шумом, телевизором и душой." />
+  <meta property="og:image" content="https://mishakaifuev.github.io/mishka-tv/preview.png" />
+  <meta property="og:url" content="https://mishakaifuev.github.io/mishka-tv/" />
+  <meta property="og:type" content="website" />
 
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="МИШКА ТВ — Круг 24/7" />
-<meta name="twitter:description" content="Михаил Круг в непрерывном эфире. С любовью, с VHS, с отголоском 90-х." />
-<meta name="twitter:image" content="https://mishakaifuev.github.io/mishka-tv/preview.png" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="МИШКА ТВ — Круг 24/7" />
+  <meta name="twitter:description" content="Михаил Круг в непрерывном эфире. С любовью, с VHS, с отголоском 90-х." />
+  <meta name="twitter:image" content="https://mishakaifuev.github.io/mishka-tv/preview.png" />
 
   <link rel="stylesheet" href="style.css" />
   <script src="https://www.youtube.com/iframe_api"></script>
@@ -36,18 +36,38 @@
   </div>
 
   <button id="mute-button">🔇 Выключить звук</button>
+  <button id="start-button">▶ Включить эфир</button>
+
+  <style>
+    #start-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      padding: 20px 40px;
+      background: #cc0000;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      z-index: 1000;
+      cursor: pointer;
+    }
+  </style>
 
   <script>
     const videos = [
-      '_wnQ3Ow02yQ', // Владимирский Централ
-      'mlOeHmUTbwg', // Пришелец
-      '7C7DLnCYrP8'  // Таганка
+      '_wnQ3Ow02yQ',
+      'mlOeHmUTbwg',
+      '7C7DLnCYrP8'
     ];
 
     let player;
     let currentIndex = 0;
 
-    function onYouTubeIframeAPIReady() {
+    document.getElementById("start-button").addEventListener("click", () => {
+      document.getElementById("start-button").style.display = "none";
+
       player = new YT.Player('player', {
         height: '540',
         width: '676',
@@ -56,26 +76,22 @@
           autoplay: 1,
           controls: 0,
           rel: 0,
-          mute: 1, // сначала mute, чтобы autoplay сработал
+          mute: 0,
           modestbranding: 1,
           fs: 0
         },
         events: {
-          'onReady': onPlayerReady,
+          'onReady': (event) => {
+            event.target.playVideo();
+          },
           'onStateChange': onPlayerStateChange,
           'onError': onPlayerError
         }
       });
-    }
+    });
 
-    function onPlayerReady(event) {
-      event.target.playVideo();
-      try {
-        event.target.unMute(); // Попытка включить звук сразу
-        console.log("Звук включён автоматически");
-      } catch (e) {
-        console.warn("Браузер запретил авторазмут");
-      }
+    function onYouTubeIframeAPIReady() {
+      // инициализация только по нажатию кнопки
     }
 
     function onPlayerStateChange(event) {
@@ -91,13 +107,12 @@
       player.loadVideoById(videos[currentIndex]);
     }
 
-    // Кнопка отключения звука
     document.getElementById("mute-button").addEventListener("click", function() {
-      player.mute();
+      if (player && player.mute) player.mute();
     });
 
-    // Переключение вручную по клавишам
     document.addEventListener('keydown', function(e) {
+      if (!player) return;
       if (e.key === 'ArrowRight') {
         currentIndex = (currentIndex + 1) % videos.length;
         player.loadVideoById(videos[currentIndex]);
